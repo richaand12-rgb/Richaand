@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#12081f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Weapon Clicker</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🔫%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ════════════════════ INTRO / START SCREEN ════════════════════ -->
+<div id="introScreen" class="screen">
+  <div id="introParticles"></div>
+  <div class="intro-content">
+    <div class="game-title">
+      <span class="title-weapon">WEAPON</span>
+      <span class="title-clicker">CLICKER</span>
+    </div>
+    <div class="intro-preview">
+      <div id="introWeapon" class="intro-weapon"></div>
+      <div class="intro-vs">VS</div>
+      <div class="intro-monster">🐉</div>
+    </div>
+    <div class="tap-to-play">👆 TAP ANYWHERE TO PLAY</div>
+  </div>
+</div>
+
+<!-- ════════════════════ MAIN GAME SCREEN ════════════════════ -->
+<div id="gameScreen" class="screen hidden">
+
+  <!-- HUD: coins, gems, stats en stage-info bovenaan -->
+  <header id="hud">
+    <div class="hud-top">
+      <div class="hud-chip coins">🪙 <span id="coinsLabel">0</span></div>
+      <div class="hud-chip gems">💎 <span id="gemsLabel">0</span></div>
+    </div>
+    <div class="hud-stats">
+      <div class="hud-stat" title="Damage per tap">👆 <span id="tapDmgLabel">0</span></div>
+      <div class="hud-stat" title="Damage per second">🔥 <span id="dpsLabel">0</span>/s</div>
+      <div class="hud-stat" title="Critical chance">🎯 <span id="critLabel">5%</span></div>
+    </div>
+    <div class="stage-info">
+      <div id="worldLabel" class="world-label">🌲 Green Plains</div>
+      <div id="stageLabel" class="stage-label">Stage 1</div>
+      <div id="killDots" class="kill-dots"></div>
+    </div>
+  </header>
+
+  <!-- BATTLE AREA: monster in het midden, wapen onderaan -->
+  <main id="battleArea">
+    <div id="monsterBox">
+      <div id="bossTag" class="hidden">👑 BOSS 👑</div>
+      <div id="monsterName">Slime</div>
+      <div id="hpBar"><div id="hpFill"></div><span id="hpText"></span></div>
+      <div id="monsterSprite">🦠</div>
+    </div>
+    <div id="weaponMount"><div id="weaponSprite"></div></div>
+    <div id="fxLayer"></div>
+  </main>
+
+  <!-- FIRE knop -->
+  <div id="fireRow">
+    <button id="fireBtn"><div id="fireFill"></div><span class="fire-label">🔥 FIRE</span></button>
+  </div>
+
+  <!-- Navigatie onderaan -->
+  <nav id="bottomNav">
+    <button class="nav-btn active" data-panel="battle"><span class="nav-ico">⚔️</span><span class="nav-txt">Battle</span></button>
+    <button class="nav-btn" data-panel="weapons"><span class="nav-ico">🔫</span><span class="nav-txt">Arsenal</span></button>
+    <button class="nav-btn" data-panel="upgrades"><span class="nav-ico">⬆️</span><span class="nav-txt">Upgrades</span></button>
+    <button class="nav-btn" data-panel="rewards"><span class="nav-ico">🏆</span><span class="nav-txt">Rewards</span></button>
+    <button class="nav-btn" data-panel="settings"><span class="nav-ico">⚙️</span><span class="nav-txt">Settings</span></button>
+  </nav>
+
+  <!-- PANEL: Weapon shop + loadout -->
+  <section id="panel-weapons" class="panel hidden">
+    <h2>🔫 Arsenal <span class="panel-coins">🪙 <span class="pcoins">0</span></span></h2>
+    <div class="tab-row">
+      <button id="tabShop" class="tab-btn active">🛒 Shop</button>
+      <button id="tabLoadout" class="tab-btn">🎒 Loadout</button>
+    </div>
+    <div id="weaponList" class="panel-list"></div>
+  </section>
+
+  <!-- PANEL: Upgrade shop -->
+  <section id="panel-upgrades" class="panel hidden">
+    <h2>⬆️ Upgrades <span class="panel-coins">🪙 <span class="pcoins">0</span></span></h2>
+    <div class="tab-row">
+      <button class="tab-btn buy-amt active" data-amt="1">Buy 1</button>
+      <button class="tab-btn buy-amt" data-amt="10">Buy 10</button>
+      <button class="tab-btn buy-amt" data-amt="max">Buy Max</button>
+    </div>
+    <div id="upgradeList" class="panel-list"></div>
+  </section>
+
+  <!-- PANEL: Rewards (daily, prestige, achievements, stats) -->
+  <section id="panel-rewards" class="panel hidden">
+    <h2>🏆 Rewards <span class="panel-coins">🪙 <span class="pcoins">0</span></span></h2>
+    <div id="dailyCard" class="reward-card"></div>
+    <div id="prestigeCard" class="reward-card"></div>
+    <h3>🏅 Achievements</h3>
+    <div id="achievementList" class="panel-list"></div>
+    <h3>📊 Statistics</h3>
+    <div id="statsBox" class="stats-box"></div>
+  </section>
+
+  <!-- PANEL: Settings -->
+  <section id="panel-settings" class="panel hidden">
+    <h2>⚙️ Settings</h2>
+    <div class="setting-row"><span>🔊 Sound</span><button id="soundToggle" class="toggle"></button></div>
+    <div class="setting-row"><span>🎵 Music</span><button id="musicToggle" class="toggle"></button></div>
+    <div class="setting-row"><span>📳 Vibration</span><button id="vibrationToggle" class="toggle"></button></div>
+    <button id="resetBtn" class="danger-btn">🗑️ Reset Progress</button>
+    <p class="settings-note">💾 Progress is saved automatically on this device.</p>
+  </section>
+
+  <!-- Modal (daily reward, prestige confirm, reset confirm, offline earnings) -->
+  <div id="modalOverlay" class="hidden">
+    <div id="modalBox">
+      <h2 id="modalTitle"></h2>
+      <div id="modalBody"></div>
+      <div id="modalButtons"></div>
+    </div>
+  </div>
+
+  <!-- Toast meldingen (achievements, unlocks) -->
+  <div id="toastBox"></div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/game.js"></script>
+<script src="js/effects.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
