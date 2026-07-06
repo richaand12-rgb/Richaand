@@ -10,9 +10,10 @@ Open `index.html` in any modern browser (works great on mobile).
 No build step, no dependencies — it's plain HTML, CSS and JavaScript.
 
 - **Tap anywhere** on the intro screen to start
-- **Tap the monster** to deal tap damage
-- **Press FIRE** to shoot your weapon (bigger damage, short cooldown)
+- **Tap the battlefield** — your weapon fires a shot at the monster
+- Buy the **Auto Fire** upgrade and your weapon shoots by itself
 - Defeat monsters to earn 🪙 coins — every 10th monster is a **👑 BOSS**
+- **⚙️ Settings** top right, **🏅 Achievements** right below it
 - Buy new **weapons** in the Arsenal (pistol → shotgun → rifle → laser → rocket → minigun → plasma → sword blaster → mythical weapon)
 - Buy **upgrades**: damage, attack speed, crits, auto fire, coin multiplier, boss rewards, offline earnings and more (Buy 1 / Buy 10 / Buy Max)
 - Claim your **daily reward** and keep your login streak going

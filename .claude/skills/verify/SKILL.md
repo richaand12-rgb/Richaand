@@ -28,10 +28,13 @@ Use a mobile viewport: `{ width: 390, height: 844, isMobile: true, hasTouch: tru
 1. Intro: `#introScreen` visible → tap it → `#gameScreen` visible.
 2. **A daily-reward modal opens on first start** — dismiss it via
    `#modalButtons .btn` before tapping the battlefield, or taps time out.
-3. Tap `#battleArea` repeatedly → `state.coins` and `state.stats.totalKills` rise.
-4. Tap `#fireBtn` → `currentMonsterHP` drops.
-5. Panels via `[data-panel="..."]` nav buttons; buy buttons use
-   `[data-action]`/`[data-id]` attributes (event delegation).
+3. Tap `#battleArea` repeatedly → a projectile flies, then (after ~130-330ms
+   flight time) `currentMonsterHP` drops and coins/kills rise. There is no
+   FIRE button; taps fire the weapon.
+4. Panels: nav `[data-panel]` buttons (weapons/upgrades/rewards, tap again to
+   close), `#settingsFab` / `#achievementsFab` floating buttons, `.panel-close`
+   ✕ buttons. Upgrade cards each have Buy 1/10/Max buttons:
+   `[data-action="buyUpgrade"][data-id][data-amt="1|10|max"]`.
 6. Boss: `state.killsThisStage = 9; monsterAlive = false; spawnMonster()` in
    `page.evaluate` → `currentMonster.isBoss` true, killing it bumps `state.stage`.
 7. Persistence: `save()` → reload → re-enter via intro tap → state restored.

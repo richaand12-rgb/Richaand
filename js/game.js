@@ -248,8 +248,8 @@ function killMonster() {
   setTimeout(spawnMonster, 550);
 }
 
-// Tap/klik op het slagveld = tap-aanval
-function tapAttack(x, y) {
+// Tap/klik op het slagveld = je wapen vuurt een schot af (met tap damage)
+function tapAttack() {
   if (!monsterAlive) return;
   state.stats.taps++;
 
@@ -259,7 +259,11 @@ function tapAttack(x, y) {
 
   AudioSys.hit();
   vibrate(12);
-  dealDamage(dmg, isCrit, x, y);
+
+  // Schiet-effect vanaf het wapen; de schade valt bij impact op het monster
+  FX.muzzleFlash();
+  FX.weaponRecoil();
+  FX.projectile(getWeapon(), () => dealDamage(dmg, isCrit));
 }
 
 // Vuurt één schot af met het huidige wapen ('manual' via FIRE knop, 'auto' via Auto Fire)

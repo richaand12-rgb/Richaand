@@ -4,7 +4,6 @@
 
 'use strict';
 
-let manualCooldown = 0;   // resterende cooldown van de FIRE knop (seconden)
 let autoFireAcc = 0;      // accumulator voor automatische schoten
 let lastFrame = 0;        // timestamp van het vorige frame
 
@@ -63,17 +62,6 @@ function gameLoop(now) {
   const dt = Math.min(0.1, (now - lastFrame) / 1000 || 0);
   lastFrame = now;
 
-  // FIRE knop cooldown aftellen + balkje bijwerken
-  if (manualCooldown > 0) {
-    manualCooldown = Math.max(0, manualCooldown - dt);
-    const pct = manualCooldown / (1 / fireRate());
-    document.getElementById('fireFill').style.width = (pct * 100) + '%';
-    document.getElementById('fireBtn').classList.remove('ready');
-  } else {
-    document.getElementById('fireFill').style.width = '0%';
-    document.getElementById('fireBtn').classList.add('ready');
-  }
-
   // Auto Fire: schiet vanzelf als de upgrade gekocht is
   const rate = autoFireRate();
   if (rate > 0 && monsterAlive) {
@@ -96,26 +84,24 @@ function bindEvents() {
     startGame();
   }, { once: true });
 
-  // Tikken op het slagveld = tap-aanval (op de plek van je vinger)
-  document.getElementById('battleArea').addEventListener('pointerdown', e => {
+  // Tikken op het slagveld = je wapen vuurt op het monster
+  document.getElementById('battleArea').addEventListener('pointerdown', () => {
     AudioSys.unlock();
-    tapAttack(e.clientX, e.clientY);
+    tapAttack();
   });
 
-  // FIRE knop: schiet met het wapen (heeft een cooldown op basis van fire rate)
-  document.getElementById('fireBtn').addEventListener('pointerdown', e => {
-    e.stopPropagation();
-    AudioSys.unlock();
-    if (manualCooldown > 0) return;
-    if (fireShot()) {
-      manualCooldown = 1 / fireRate();
-      vibrate(15);
-    }
-  });
-
-  // Navigatie onderin
+  // Navigatie onderin (nogmaals tikken sluit het panel)
   document.querySelectorAll('.nav-btn').forEach(btn => {
-    btn.addEventListener('click', () => UI.showPanel(btn.dataset.panel === 'battle' ? 'battle' : btn.dataset.panel));
+    btn.addEventListener('click', () => UI.showPanel(btn.dataset.panel));
+  });
+
+  // Zwevende knoppen rechts: settings en achievements
+  document.getElementById('settingsFab').addEventListener('click', () => UI.showPanel('settings'));
+  document.getElementById('achievementsFab').addEventListener('click', () => UI.showPanel('achievements'));
+
+  // Sluitknoppen (✕) in de panel headers
+  document.querySelectorAll('.panel-close').forEach(btn => {
+    btn.addEventListener('click', () => UI.showPanel('battle'));
   });
 
   // Arsenal tabs: Shop / Loadout
@@ -132,15 +118,6 @@ function bindEvents() {
     UI.renderWeaponList();
   });
 
-  // Buy 1 / Buy 10 / Buy Max knoppen
-  document.querySelectorAll('.buy-amt').forEach(btn => {
-    btn.addEventListener('click', () => {
-      UI.buyAmount = btn.dataset.amt === 'max' ? 'max' : parseInt(btn.dataset.amt, 10);
-      document.querySelectorAll('.buy-amt').forEach(b => b.classList.toggle('active', b === btn));
-      UI.renderUpgradeList();
-    });
-  });
-
   // Weapon shop: koop / equip / upgrade (event delegation, want de lijst wordt opnieuw gerenderd)
   document.getElementById('weaponList').addEventListener('click', e => {
     const btn = e.target.closest('[data-action]');
@@ -151,11 +128,12 @@ function bindEvents() {
     if (action === 'upgrade') upgradeWeapon(id);
   });
 
-  // Upgrade shop
+  // Upgrade shop: elke kaart heeft eigen Buy 1 / Buy 10 / Buy Max knoppen
   document.getElementById('upgradeList').addEventListener('click', e => {
     const btn = e.target.closest('[data-action="buyUpgrade"]');
     if (!btn || btn.disabled) return;
-    buyUpgrade(btn.dataset.id, UI.buyAmount);
+    const amt = btn.dataset.amt === 'max' ? 'max' : parseInt(btn.dataset.amt, 10);
+    buyUpgrade(btn.dataset.id, amt);
   });
 
   // Rewards panel: daily claim + prestige
@@ -206,6 +184,7 @@ function bindEvents() {
     UI.renderHUD();
     if (UI.activePanel === 'weapons') UI.renderWeaponList();
     if (UI.activePanel === 'upgrades') UI.renderUpgradeList();
+    if (UI.activePanel === 'achievements') UI.renderAchievements();
   }, 1500);
 
   // Opslaan wanneer de app naar de achtergrond gaat of sluit

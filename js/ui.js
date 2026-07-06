@@ -10,7 +10,9 @@ const UI = {
 
   activePanel: 'battle',   // welk panel is open ('battle' = geen panel)
   weaponTab: 'shop',       // 'shop' of 'loadout' in het Arsenal panel
-  buyAmount: 1,            // 1, 10 of 'max' in de upgrade shop
+
+  // Alle panel-namen (weapons/upgrades/rewards via de nav, de rest via knoppen)
+  PANELS: ['weapons', 'upgrades', 'rewards', 'achievements', 'settings'],
 
   el(id) { return document.getElementById(id); },
 
@@ -24,6 +26,7 @@ const UI = {
     this.renderWeaponList();
     this.renderUpgradeList();
     this.renderRewards();
+    this.renderAchievements();
     this.renderSettings();
   },
 
@@ -112,8 +115,10 @@ const UI = {
   /* ─────────────── PANELS ─────────────── */
 
   showPanel(name) {
+    // Nogmaals op dezelfde knop tikken sluit het panel weer
+    if (name === this.activePanel) name = 'battle';
     this.activePanel = name;
-    ['weapons', 'upgrades', 'rewards', 'settings'].forEach(p => {
+    this.PANELS.forEach(p => {
       this.el('panel-' + p).classList.toggle('hidden', p !== name);
     });
     document.querySelectorAll('.nav-btn').forEach(b => {
@@ -123,6 +128,7 @@ const UI = {
     if (name === 'weapons') this.renderWeaponList();
     if (name === 'upgrades') this.renderUpgradeList();
     if (name === 'rewards') this.renderRewards();
+    if (name === 'achievements') this.renderAchievements();
     if (name === 'settings') this.renderSettings();
   },
 
@@ -187,30 +193,36 @@ const UI = {
     UPGRADES.forEach(up => {
       const lvl = state.upgrades[up.id];
       const maxed = up.maxLevel && lvl >= up.maxLevel;
-      const isGems = up.currency === 'gems';
-      const cur = isGems ? '💎' : '🪙';
+      const cur = up.currency === 'gems' ? '💎' : '🪙';
 
-      // Hoeveel gaat deze klik kopen en wat kost dat?
-      let count = this.buyAmount === 'max' ? maxAffordable(up) : this.buyAmount;
-      if (up.maxLevel) count = Math.min(count, up.maxLevel - lvl);
-      const cost = totalUpgradeCost(up, Math.max(1, count));
-      const canAfford = !maxed && count > 0 && currencyOf(up) >= cost;
+      // Eén koopknop (Buy 1 / Buy 10 / Buy Max) voor deze upgrade-kaart
+      const buyBtn = (amt) => {
+        let count = amt === 'max' ? maxAffordable(up) : amt;
+        if (up.maxLevel) count = Math.min(count, up.maxLevel - lvl);
+        const cost = totalUpgradeCost(up, Math.max(1, count));
+        const canAfford = count > 0 && currencyOf(up) >= cost;
+        // Toon het échte aantal dat gekocht wordt (bij max level kan dat minder zijn)
+        const label = amt === 'max' ? (count > 0 ? `MAX +${count}` : 'MAX') : `+${Math.max(1, count)}`;
+        return `<button class="btn buy buy-opt ${canAfford ? '' : 'disabled'}"
+                  data-action="buyUpgrade" data-id="${up.id}" data-amt="${amt}" ${canAfford ? '' : 'disabled'}>
+                  <span class="buy-count">${label}</span>
+                  <span class="buy-cost">${fmt(cost)} ${cur}</span>
+                </button>`;
+      };
 
       const card = document.createElement('div');
-      card.className = 'card';
+      card.className = 'card upgrade-card';
       card.innerHTML = `
-        <div class="card-icon">${up.icon}</div>
-        <div class="card-info">
-          <div class="card-name">${up.name} <span class="lvl">Lv ${lvl}${up.maxLevel ? '/' + up.maxLevel : ''}</span></div>
-          <div class="card-desc">${up.desc}</div>
+        <div class="upgrade-head">
+          <div class="card-icon">${up.icon}</div>
+          <div class="card-info">
+            <div class="card-name">${up.name} <span class="lvl">Lv ${lvl}${up.maxLevel ? '/' + up.maxLevel : ''}</span></div>
+            <div class="card-desc">${up.desc}</div>
+          </div>
         </div>
-        <div class="card-actions">
-          ${maxed
-            ? '<button class="btn disabled" disabled>MAX</button>'
-            : `<button class="btn buy ${canAfford ? '' : 'disabled'}" data-action="buyUpgrade" data-id="${up.id}" ${canAfford ? '' : 'disabled'}>
-                 +${Math.max(1, count)} · ${fmt(cost)} ${cur}
-               </button>`}
-        </div>`;
+        ${maxed
+          ? '<div class="maxed-badge">✨ MAX LEVEL</div>'
+          : `<div class="buy-row">${buyBtn(1)}${buyBtn(10)}${buyBtn('max')}</div>`}`;
       box.appendChild(card);
     });
   },
@@ -242,7 +254,11 @@ const UI = {
       ${gain > 0
         ? `<button class="btn" data-action="prestige">Prestige now for +${gain} 💎</button>`
         : `<button class="btn disabled" disabled>Reach stage ${PRESTIGE_MIN_STAGE} (best: ${state.maxStage})</button>`}`;
+  },
 
+  /* ─────────────── ACHIEVEMENTS PANEL ─────────────── */
+
+  renderAchievements() {
     // Achievements lijst
     const list = this.el('achievementList');
     list.innerHTML = '';

@@ -32,7 +32,19 @@
 <!-- ════════════════════ MAIN GAME SCREEN ════════════════════ -->
 <div id="gameScreen" class="screen hidden">
 
-  <!-- HUD: coins, gems, stats en stage-info bovenaan -->
+  <!-- BATTLE AREA: full screen, alles zweeft eroverheen -->
+  <main id="battleArea">
+    <div id="monsterBox">
+      <div id="bossTag" class="hidden">👑 BOSS 👑</div>
+      <div id="monsterName">Slime</div>
+      <div id="hpBar"><div id="hpFill"></div><span id="hpText"></span></div>
+      <div id="monsterSprite">🦠</div>
+    </div>
+    <div id="weaponMount"><div id="weaponSprite"></div></div>
+    <div id="fxLayer"></div>
+  </main>
+
+  <!-- HUD overlay: coins, gems, stats en stage-info bovenaan -->
   <header id="hud">
     <div class="hud-top">
       <div class="hud-chip coins">🪙 <span id="coinsLabel">0</span></div>
@@ -50,35 +62,20 @@
     </div>
   </header>
 
-  <!-- BATTLE AREA: monster in het midden, wapen onderaan -->
-  <main id="battleArea">
-    <div id="monsterBox">
-      <div id="bossTag" class="hidden">👑 BOSS 👑</div>
-      <div id="monsterName">Slime</div>
-      <div id="hpBar"><div id="hpFill"></div><span id="hpText"></span></div>
-      <div id="monsterSprite">🦠</div>
-    </div>
-    <div id="weaponMount"><div id="weaponSprite"></div></div>
-    <div id="fxLayer"></div>
-  </main>
+  <!-- Zwevende knoppen rechts: settings boven, achievements eronder -->
+  <button id="settingsFab" class="fab" title="Settings">⚙️</button>
+  <button id="achievementsFab" class="fab" title="Achievements">🏅</button>
 
-  <!-- FIRE knop -->
-  <div id="fireRow">
-    <button id="fireBtn"><div id="fireFill"></div><span class="fire-label">🔥 FIRE</span></button>
-  </div>
-
-  <!-- Navigatie onderaan -->
+  <!-- Zwevende navigatie onderaan -->
   <nav id="bottomNav">
-    <button class="nav-btn active" data-panel="battle"><span class="nav-ico">⚔️</span><span class="nav-txt">Battle</span></button>
     <button class="nav-btn" data-panel="weapons"><span class="nav-ico">🔫</span><span class="nav-txt">Arsenal</span></button>
     <button class="nav-btn" data-panel="upgrades"><span class="nav-ico">⬆️</span><span class="nav-txt">Upgrades</span></button>
-    <button class="nav-btn" data-panel="rewards"><span class="nav-ico">🏆</span><span class="nav-txt">Rewards</span></button>
-    <button class="nav-btn" data-panel="settings"><span class="nav-ico">⚙️</span><span class="nav-txt">Settings</span></button>
+    <button class="nav-btn" data-panel="rewards"><span class="nav-ico">🎁</span><span class="nav-txt">Rewards</span></button>
   </nav>
 
   <!-- PANEL: Weapon shop + loadout -->
   <section id="panel-weapons" class="panel hidden">
-    <h2>🔫 Arsenal <span class="panel-coins">🪙 <span class="pcoins">0</span></span></h2>
+    <h2>🔫 Arsenal <span class="panel-coins">🪙 <span class="pcoins">0</span></span><button class="panel-close" data-close>✕</button></h2>
     <div class="tab-row">
       <button id="tabShop" class="tab-btn active">🛒 Shop</button>
       <button id="tabLoadout" class="tab-btn">🎒 Loadout</button>
@@ -86,23 +83,22 @@
     <div id="weaponList" class="panel-list"></div>
   </section>
 
-  <!-- PANEL: Upgrade shop -->
+  <!-- PANEL: Upgrade shop (Buy 1/10/Max per upgrade-kaart) -->
   <section id="panel-upgrades" class="panel hidden">
-    <h2>⬆️ Upgrades <span class="panel-coins">🪙 <span class="pcoins">0</span></span></h2>
-    <div class="tab-row">
-      <button class="tab-btn buy-amt active" data-amt="1">Buy 1</button>
-      <button class="tab-btn buy-amt" data-amt="10">Buy 10</button>
-      <button class="tab-btn buy-amt" data-amt="max">Buy Max</button>
-    </div>
+    <h2>⬆️ Upgrades <span class="panel-coins">🪙 <span class="pcoins">0</span></span><button class="panel-close" data-close>✕</button></h2>
     <div id="upgradeList" class="panel-list"></div>
   </section>
 
-  <!-- PANEL: Rewards (daily, prestige, achievements, stats) -->
+  <!-- PANEL: Rewards (daily + prestige) -->
   <section id="panel-rewards" class="panel hidden">
-    <h2>🏆 Rewards <span class="panel-coins">🪙 <span class="pcoins">0</span></span></h2>
+    <h2>🎁 Rewards <span class="panel-coins">🪙 <span class="pcoins">0</span></span><button class="panel-close" data-close>✕</button></h2>
     <div id="dailyCard" class="reward-card"></div>
     <div id="prestigeCard" class="reward-card"></div>
-    <h3>🏅 Achievements</h3>
+  </section>
+
+  <!-- PANEL: Achievements + statistieken -->
+  <section id="panel-achievements" class="panel hidden">
+    <h2>🏅 Achievements <span class="panel-coins">🪙 <span class="pcoins">0</span></span><button class="panel-close" data-close>✕</button></h2>
     <div id="achievementList" class="panel-list"></div>
     <h3>📊 Statistics</h3>
     <div id="statsBox" class="stats-box"></div>
@@ -110,7 +106,7 @@
 
   <!-- PANEL: Settings -->
   <section id="panel-settings" class="panel hidden">
-    <h2>⚙️ Settings</h2>
+    <h2>⚙️ Settings <button class="panel-close" data-close>✕</button></h2>
     <div class="setting-row"><span>🔊 Sound</span><button id="soundToggle" class="toggle"></button></div>
     <div class="setting-row"><span>🎵 Music</span><button id="musicToggle" class="toggle"></button></div>
     <div class="setting-row"><span>📳 Vibration</span><button id="vibrationToggle" class="toggle"></button></div>
