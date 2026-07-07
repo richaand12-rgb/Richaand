@@ -1,47 +1,45 @@
-# 🔫 Weapon Clicker
+# 🏎️ Garage Empire Clicker
 
-A colorful, addictive mobile clicker game combined with a battle/shooter system.
-Tap monsters, fire your weapon, earn coins, unlock crazy weapons, buy upgrades,
-defeat bosses and prestige for permanent bonuses!
+A dark neon garage / street-racing idle clicker game for mobile.
+Tap a broken car to repair it, earn coins & XP, buy upgrades, hire mechanics,
+unlock better cars and win races — all the way from a Rusty Hatchback to a Hypercar!
 
 ## ▶️ How to play
 
-Open `index.html` in any modern browser (works great on mobile).
-No build step, no dependencies — it's plain HTML, CSS and JavaScript.
+Open `index.html` in any modern browser (best on mobile, ~390×844).
+No build step, no dependencies — plain HTML, CSS and JavaScript with `localStorage` saves.
 
-- **Tap anywhere** on the intro screen to start
-- **Tap the battlefield** — your weapon fires a shot at the monster
-- Buy the **Auto Fire** upgrade and your weapon shoots by itself
-- Defeat monsters to earn 🪙 coins — every 10th monster is a **👑 BOSS**
-- **⚙️ Settings** top right, **🏅 Achievements** right below it
-- Buy new **weapons** in the Arsenal (pistol → shotgun → rifle → laser → rocket → minigun → plasma → sword blaster → mythical weapon)
-- Buy **upgrades**: damage, attack speed, crits, auto fire, coin multiplier, boss rewards, offline earnings and more (Buy 1 / Buy 10 / Buy Max)
-- Claim your **daily reward** and keep your login streak going
-- Unlock **achievements** for bonus coins and 💎
-- From stage 20: **🌟 Prestige** — reset your run for permanent 💎 bonuses (+10% damage, +10% coins, +5% fire rate per 💎)
+- **Tap the car** to repair it — every tap earns 🪙 coins and fills the repair bar
+- At **100% repair** you get a big coin + XP reward and the car resets
+- **Level up** with XP for coin bonuses and 💎 gems
+- **Upgrades tab**: Better Tools, Turbo Kit, Garage Lift, Paint Booth, Engine Tuning, Premium Parts — prices rise with every purchase
+- **Mechanics**: hire an Apprentice up to a full Pit Crew for automatic repairs (works offline too!)
+- **Cars tab**: unlock and select 9 cars, each with bigger repair jobs and bigger rewards
+- **Race tab**: 5 races from Street Sprint to the Supercar Cup — win chance depends on your car, level and Engine Tuning
+- **💎 Boosts**: Nitro (2× coins for 60s) and Instant Fix
+- **⚙️ Settings** (top right): stats, manual save and reset (with confirmation)
 
 ## ✨ Features
 
-- 6 worlds with changing backgrounds (Green Plains → Cosmic Void)
-- 12 monster types + 6 rotating bosses with hit/death animations
-- 9 weapons with unique SVG looks and projectile effects (bullets, pellets, lasers, rockets, plasma, slashes)
-- Damage popups, critical hits, muzzle flashes, coin bursts and screen shake
-- 10 upgrade types with exponential pricing
-- 15 achievements, daily rewards with streaks, offline earnings
-- Full prestige/rebirth system
-- Generated chiptune music & sound effects (WebAudio, no audio files)
-- Vibration support on mobile
-- Automatic local save (localStorage)
+- One-screen mobile layout: big tappable car, compact HUD, fixed bottom tabs
+- 9 cars drawn as inline SVG with per-car colors, damage overlay that fades as you repair
+- Floating "+coins" popups, sparks, car pop/celebrate animations, animated progress bars
+- Idle income via mechanics + offline earnings (capped, 50% rate)
+- Gems from level-ups, race wins and milestones
+- Automatic saving to `localStorage` (every 15s and on close)
+- Dark luxury garage style with neon cyan/orange accents, no horizontal scrolling
 
 ## 📁 Project structure
 
 ```
-index.html      – all screens (intro, battle, shops, settings)
-css/style.css   – colorful arcade styling, animations, responsive layout
-js/data.js      – weapons, monsters, bosses, worlds, upgrades, achievements
-js/audio.js     – generated sound effects & music (WebAudio)
-js/game.js      – game state, formulas, save system, prestige, dailies
-js/effects.js   – damage popups, projectiles, particles, screen shake
-js/ui.js        – HUD, panels, modals, toasts
-js/main.js      – init, event handlers, game loop
+index.html   – all screens: HUD, garage, upgrades, cars, races, modals
+style.css    – dark/neon garage styling, animations, responsive layout
+script.js    – game data, formulas, save system, races, offline earnings, SVG cars
 ```
+
+---
+
+## 🔫 Weapon Clicker (bonus game)
+
+The previous game in this repo is still playable: open `weapon-clicker.html`
+(uses `css/` and `js/`).
