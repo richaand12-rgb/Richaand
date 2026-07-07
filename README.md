@@ -21,8 +21,9 @@ No build step, no dependencies — plain HTML, CSS and JavaScript with `localSto
 
 ## ✨ Features
 
-- One-screen mobile layout: big tappable car, compact HUD, fixed bottom tabs
-- 9 cars drawn as inline SVG with per-car colors, damage overlay that fades as you repair
+- One-screen mobile layout: near-fullscreen tappable car, repair bar pinned at the top, fixed bottom tabs
+- Custom PNG asset pack (`assets/`): 9 cars with separate damage overlays that fade as you repair, thumbnails (locked/unlocked), icons, garage background and race sprites
+- Owned upgrades & mechanics show up as gear tiles in the garage
 - Floating "+coins" popups, sparks, car pop/celebrate animations, animated progress bars
 - Idle income via mechanics + offline earnings (capped, 50% rate)
 - Gems from level-ups, race wins and milestones
@@ -34,7 +35,8 @@ No build step, no dependencies — plain HTML, CSS and JavaScript with `localSto
 ```
 index.html   – all screens: HUD, garage, upgrades, cars, races, modals
 style.css    – dark/neon garage styling, animations, responsive layout
-script.js    – game data, formulas, save system, races, offline earnings, SVG cars
+script.js    – game data, formulas, save system, races, offline earnings
+assets/      – PNG asset pack (cars, damage overlays, thumbnails, icons, sprites)
 ```
 
 ---

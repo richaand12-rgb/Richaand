@@ -25,7 +25,15 @@
     <div class="hud-row hud-level">
       <span class="level-badge">LV <b id="hudLevel">1</b></span>
       <div class="xp-bar"><div id="xpFill"></div></div>
-      <span class="xp-text" id="xpText">0 / 50</span>
+      <span class="xp-text" id="xpText">0 / 80</span>
+    </div>
+    <!-- repair bar bovenaan, direct onder de HUD -->
+    <div id="repairTop">
+      <div class="repair-label">
+        <span>🔧 REPAIR · 🔩 <b id="autoInfo">0</b>/s</span>
+        <span id="repairPct">0%</span>
+      </div>
+      <div class="bar repair-bar"><div id="repairFill" class="bar-fill"></div></div>
     </div>
   </header>
 
@@ -34,35 +42,27 @@
 
     <!-- ── TAB: GARAGE ── -->
     <section id="tab-garage" class="tab active">
-      <div class="car-head">
-        <div id="carName" class="car-name">Rusty Hatchback</div>
-        <div id="rewardInfo" class="reward-info"></div>
-      </div>
-
       <div id="tapArea">
+        <div class="car-head">
+          <div id="carName" class="car-name">Rusty Hatchback</div>
+          <div id="rewardInfo" class="reward-info"></div>
+        </div>
+        <div id="equipRow"></div>
         <div id="carGlow"></div>
         <div id="carSprite"></div>
         <div id="fxLayer"></div>
         <div id="tapHint">👆 TAP TO REPAIR</div>
+        <div id="boostRow">
+          <button id="boostNitro" class="boost-btn"><span>🔥 Nitro ×2</span><small>5 💎 · 60s</small></button>
+          <button id="boostFix" class="boost-btn"><span>⚡ Instant Fix</span><small>6 💎</small></button>
+        </div>
       </div>
-
-      <div id="repairWrap">
-        <div class="repair-label"><span>🔧 REPAIR</span><span id="repairPct">0%</span></div>
-        <div class="bar repair-bar"><div id="repairFill" class="bar-fill"></div></div>
-      </div>
-
-      <div id="boostRow">
-        <button id="boostNitro" class="boost-btn"><span>🔥 Nitro ×2 coins</span><small>5 💎 · 60s</small></button>
-        <button id="boostFix" class="boost-btn"><span>⚡ Instant Fix</span><small>3 💎</small></button>
-      </div>
-
-      <div id="incomeInfo">🔩 <b id="autoInfo">0</b> repair/sec from your crew</div>
     </section>
 
     <!-- ── TAB: UPGRADES ── -->
     <section id="tab-upgrades" class="tab">
       <h2 class="tab-title">⬆️ Upgrades</h2>
-      <p class="tab-sub">Boost your taps, coins and race power.</p>
+      <p class="tab-sub">Boost your taps, coins and race power. Owned gear shows up in your garage.</p>
       <div id="upgradeList" class="card-list"></div>
       <h2 class="tab-title">🧑‍🔧 Mechanics</h2>
       <p class="tab-sub">Mechanics repair cars automatically — even while you're away.</p>
@@ -100,8 +100,8 @@
   <div class="modal-card">
     <h3 id="raceTitle">Street Sprint</h3>
     <div class="race-track">
-      <div class="race-lane"><div class="racer" id="racerYou">🏎️</div><span class="lane-tag">YOU</span></div>
-      <div class="race-lane"><div class="racer" id="racerRival">🚗</div><span class="lane-tag">RIVAL</span></div>
+      <div class="race-lane"><img class="racer" id="racerYou" src="assets/race_sprites/player_race_car.png" alt=""><span class="lane-tag">YOU</span></div>
+      <div class="race-lane"><img class="racer" id="racerRival" src="assets/race_sprites/rival_race_car.png" alt=""><span class="lane-tag">RIVAL</span></div>
     </div>
     <div id="raceResult" class="race-result"></div>
     <button id="raceCollectBtn" class="btn primary hidden">Collect</button>
